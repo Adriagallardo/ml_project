@@ -1,0 +1,24 @@
+{
+    "project_name": "El consumo de alcohol en estudiantes de secundaria",
+    "author": "Adri\u00e0 Gallardo Vi\u00f1as",
+    "linkedin": "linkedin.com/in/adri\u00e0-gallardo-vi\u00f1as-a25834209",
+    "e_mail": "adriagallardo96@gmail.com",
+    "project_title": "Proyecto EDA: Estudio de causas promotoras del consumo de alcohol en estudiantes de secundaria",
+    "project_description": "El consumo de alcohol en estudiantes de secundaria deriva en mayor medida de pautas educacionales impuestos por los padres como la concesi\u00f3n de tiempo libre en sus hijos o la dedicaci\u00f3n en educarlos y no de factores intr\u00ednsecos al alumno ni propio del entorno.",
+    "flask_port": 4004,
+    "streamlit_port": 8501,
+    "python_libraries_used": [
+        "pandas",
+        "numpy",
+        "seaborn",
+        "matplotlib.pylot",
+        "os",
+        "sys",
+        "squarify",
+        "sqlalchemy",
+        "pymysql",
+        "argparse",
+        "streamlit",
+        "flask"
+    ]
+}
