@@ -1,5 +1,6 @@
 import tensorflow as tf
 import os
+from sklearn.metrics import confusion_matrix
 
 
 
@@ -61,3 +62,17 @@ def save_model(path, model, model_filename):
 def load_model(path):
     model  = tf.keras.models.load_model(path)
     return model
+
+def generate_confusion_matrix(test, model):
+    "Esta función genera una matriz de confusión a partir de un dataset de test y el modelo entrenado"
+    
+    predictions = model.predict(test)
+    predicted_categories = tf.argmax(predictions, axis=1)
+    
+    true_categories = tf.argmax(tf.concat([tf.cast(y, tf.int64) for x, y in test], axis=0), axis=1)
+    
+    matrix = confusion_matrix(true_categories, predicted_categories)
+    print(matrix)
+
+    return matrix, true_categories, predicted_categories
+

@@ -3,10 +3,9 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from seaborn.palettes import color_palette
-import squarify as sq
 import os
 import matplotlib.image as mpimg
+import random
 
 def sns_gstyle():
     """Esta función cambia los gráficos de seaborn que vienen por defecto"""
@@ -22,7 +21,7 @@ def pie_chart(data):
 
 def visualize_countplot(x,y,xlabel,ylabel,title,jpgname):
     """Esta función genera una visualización de conteo de Y para X, en barras."""
-    sns.barplot(x=x, y=y, color="deepskyblue")
+    sns.barplot(x=x, y=y, color="lightsteelblue")
     plt.title(title)
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
@@ -86,6 +85,52 @@ def accuracy_evolution_vis(model_history):
     plt.plot(epochs_range, val_loss, label='Validation Loss')
     plt.legend(loc='upper right')
     plt.xlabel("Épocas")
-    plt.show()
 
     plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "accuracy_evolution.jpg")
+    plt.show()
+
+def real_pred_samples(test, predictions, model):
+    """Esta función imprime por pantalla resultados de predicción de imágenes a partir de un conjunto de test y unos resultados de predicción,
+    ambos en formato tensor, y pasando también el modelo."""
+
+    """En esta sección se definen las clases"""
+    test_dir = ".." + os.sep + "data" + os.sep + "test"
+    decoded_labels = os.listdir(test_dir)
+
+    """En esta sección creamos aleatoriedad para el muestreo de imágenes"""
+    a = random.randint(0,10)
+
+    rand_batch = []
+
+    for i in range(15):
+        rand_batch.append(random.randint(0,84))
+
+    """En esta sección se imprime la visualización"""
+
+    plt.figure(figsize=(13, 10))
+    plt.suptitle("Resultado real"+"\n"+"Resultado predicho", fontsize=(20))
+    #"\n"+"Resultado predicho"
+    for i, j in enumerate(rand_batch):
+        for images, labels in test.take(j):
+            ax = plt.subplot(3, 5, i + 1)
+            plt.imshow(images[a].numpy().astype("uint8"))
+            random_predictions = model.predict(images)
+            plt.title(decoded_labels[np.argmax(labels[a].numpy())] + "\n" + decoded_labels[np.argmax(random_predictions[a])])
+            
+            plt.axis("off")
+
+    plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "real_pred_samples.jpg")
+
+def plot_confusion_matrix(cm, subset):
+    "Esta función imprime por pantalla una visualización de una matriz de confusión en formato heatmap. 'cm' es el parámetro correspondiente con la matriz y subset son los niveles con los que clasificamos la matriz"
+
+    # create figure
+    fig, axes = plt.subplots(nrows=1, ncols=1, figsize=(10, 8))
+
+    # plot heatmap - adjust font and label size
+    sns.set(font_scale=1.0) 
+    sns.heatmap(cm, annot=True, annot_kws={"size": 14}, fmt='d', ax=axes, vmin=0, vmax=100, cmap="Blues",xticklabels=subset, yticklabels=subset)
+    plt.xlabel("Etiqueta de predicción")
+    plt.ylabel("Etiqueta real")
+    plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "confusion_matrix.jpg")
+    plt.show()
