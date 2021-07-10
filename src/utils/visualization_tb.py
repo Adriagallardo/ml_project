@@ -39,13 +39,13 @@ def imageset_intro_vis(download_folders, ds_path):
         image_directory = os.path.join(ds_path, classification)
         image_file_names = os.listdir(image_directory)
         selected_image_file_paths[classification] = [os.path.join(image_directory, image_file_names[i]) for i in image_indexes]
-    plt.figure(figsize=(8,16))
+    plt.figure(figsize=(10,12))
     
         
     for i,classification in enumerate(download_folders):
         for j,image in enumerate(selected_image_file_paths[classification]):
             image_number = (i * len(image_indexes)) + j + 1
-            ax = plt.subplot(10,3,image_number)
+            ax = plt.subplot(4,3,image_number)
             plt.title(classification)
             plt.axis("off")
             plt.imshow(mpimg.imread(image))
@@ -80,13 +80,12 @@ def accuracy_evolution_vis(model_history):
     plt.plot(epochs_range, acc, label='Training Accuracy')
     plt.plot(epochs_range, val_acc, label='Validation Accuracy')
     plt.legend(loc='lower right')
-    plt.title('Training and Validation Accuracy')
     plt.subplot(2, 1, 2)
     
     plt.plot(epochs_range, loss, label='Training Loss')
     plt.plot(epochs_range, val_loss, label='Validation Loss')
     plt.legend(loc='upper right')
-    plt.title('Training and Validation Loss')
+    plt.xlabel("Épocas")
     plt.show()
 
     plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "accuracy_evolution.jpg")

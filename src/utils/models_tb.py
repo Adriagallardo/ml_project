@@ -44,6 +44,7 @@ def train_val_split_from_dir():
     
     test_ds = tf.keras.preprocessing.image_dataset_from_directory(
         test_dir,
+        shuffle=False,
         image_size=(64, 64),
         labels="inferred",
         label_mode="categorical",
@@ -56,3 +57,7 @@ def save_model(path, model, model_filename):
 
     model.save(path + model_filename)
     print("El modelo ha sido guardado correctamente")
+
+def load_model(path):
+    model  = tf.keras.models.load_model(path)
+    return model
