@@ -1,6 +1,14 @@
 #Este archivo contiene las funciones asociadas al archivo app.py que se ejecuta en streamlit.
+from pathlib import WindowsPath
 import streamlit as st
 import pandas as pd
+from PIL import Image, ImageOps
+import os
+import cv2
+from keras.preprocessing.image import img_to_array
+import tensorflow as tf
+from tensorflow import keras
+import numpy as np
 
 
 st.cache(suppress_st_warning=True)
@@ -12,10 +20,86 @@ def load_json_df(uploaded_file):
 
 def welcome():
     """Esta función imprime en pantalla un mensaje de bienvenida para la pantalla de inicio"""
-    st.title('Proyecto EDA')
-    st.write('Bienvenido al proyecto EDA de Adrià. Selecciona en el menú a la izquierda\
-            que sección quieres visitar')
+    st.title('Proyecto de Machine Learning: Clasificación de superficies terrestres reconocidas por vía satelital')
+    st.write('En este proyecto se diseñan diversos modelos de inteligencia artificial capaces de reconocer imágenes tomadas por vía satelital,\
+             sobre la superficie terrestre, y clasificarlas en grupos siguiendo los criterios de análisis exploratorio, aprendizaje automático\
+             (machine learning), aprendizaje profundo (deep learning), visualización de datos y diseño experimental.')
 
+def visualization():
+    """Esta función muestra por pantalla visualizaciones del proyecto"""
+
+    st.title('Visualizaciones')
+    st.write('En esta sección se muestran algunas visualizaciones que se han elaborado durante el proyecto.')
+    
+    st.write('\nNúmero de imagenes que tiene el proyecto:')
+    img = Image.open( '..' + os.sep + '..' + os.sep+ 'reports'+ os.sep+ 'from_main'+ os.sep+ 'images'+ os.sep + 'n_files_per_folder.jpg')
+    st.image(img,use_column_width=True)
+
+    st.write('\n\n\nComo son las imágenes del proyecto:')
+    img = Image.open( '..' + os.sep + '..' + os.sep+ 'reports'+ os.sep+ 'from_main'+ os.sep+ 'images'+ os.sep + 'image_label_example.jpg')
+    st.image(img,use_column_width=True)
+
+    st.write('\nComo se trabajan las clases con onehot-encoding de tensorflow:')
+    img = Image.open( '..' + os.sep + '..' + os.sep+ 'reports'+ os.sep+ 'from_main'+ os.sep+ 'images'+ os.sep + 'onehot_labels_example.jpg')
+    st.image(img,use_column_width=True)
+
+    st.write('\nMatriz de confusión del mejor modelo:')
+    img = Image.open( '..' + os.sep + '..' + os.sep+ 'reports'+ os.sep+ 'from_main'+ os.sep+ 'images'+ os.sep + 'confusion_matrix.jpg')
+    st.image(img,use_column_width=True)
+
+    st.write('\n\n\nResultados de predicción del mejor modelo:')
+    img = Image.open( '..' + os.sep + '..' + os.sep+ 'reports'+ os.sep+ 'from_main'+ os.sep+ 'images'+ os.sep + 'real_pred_samples.jpg')
+    st.image(img,use_column_width=True)
+
+def predict(upper_path):
+    """Esta función permite poner en un dashboard un recogedor de imágenes que haga predicciones para el modelo que se propone"""
+    
+    st.title('Predicción')
+    st.write('En esta sección puedes hacer tus propias predicciones. Sube una imagen "rgb" y el modelo intentará descubrir a que clase pertenece.')
+    
+    """Coge la imagen"""
+    
+
+    file = st.file_uploader("Sube el archivo", type=["png", "jpg", "jpeg"])
+    show_file = st.empty()
+
+    if not file:
+        show_file.info("Por favor, mira que el archivo sea tipo: " + ", ".join(["png", "jpg", "jpeg"]))
+        return
+
+    image = Image.open(file)
+    st.image(image)
+
+    """Adecua la imagen al modelo"""
+
+    size = (64,64)
+    image = ImageOps.fit(image, size, Image.ANTIALIAS)
+    image = np.asarray(image)
+    img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    img_reshape = img[np.newaxis,...]
+
+    """Se aplica el modelo"""
+
+    model = tf.keras.models.load_model(upper_path + os.sep + "models" + os.sep + "model1.h5")
+    #model  = tf.saved_model.load(".." + ".." + os.sep + "models" + os.sep + "model1.pb")
+    
+    prediction = model.predict(img_reshape)
+    test_dir = upper_path + os.sep + "data" + os.sep + "test"
+    decoded_labels = os.listdir(test_dir)
+    score = tf.nn.softmax(prediction[0])
+
+    st.success('La imagen ha sido identificada')
+    
+    
+    resultado = decoded_labels[np.argmax(prediction)]
+    
+    st.write('Resultado:', resultado)
+
+
+   
+
+
+    
 
 def browse_json_todf():
     """Esta función genera un navegador que permite seleccionar un archivo json en el equipo

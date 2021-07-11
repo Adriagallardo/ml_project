@@ -60,7 +60,7 @@ def save_model(path, model, model_filename):
     print("El modelo ha sido guardado correctamente")
 
 def load_model(path):
-    model  = tf.keras.models.load_model(path)
+    model = tf.keras.models.load_model(path)
     return model
 
 def generate_confusion_matrix(test, model):
@@ -76,3 +76,14 @@ def generate_confusion_matrix(test, model):
 
     return matrix, true_categories, predicted_categories
 
+def single_predictions(model):
+    "Esta función genera predicciones individuales sobre el modelo señalado pasando imágenes 64x64"
+
+    test_dir = ".." + os.sep + "data" + os.sep + "test"
+    
+    test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+        test_dir,
+        shuffle=False,
+        image_size=(64, 64),
+        color_mode="rgb"
+    )

@@ -20,12 +20,12 @@ def pie_chart(data):
     return a
 
 def visualize_countplot(x,y,xlabel,ylabel,title,jpgname):
-    """Esta función genera una visualización de conteo de Y para X, en barras."""
-    sns.barplot(x=x, y=y, color="lightsteelblue")
+    """Esta función genera una visualización de conteo de Y para X, en barras horizontalmente."""
+    plt.figure(figsize=(10, 10))
+    sns.barplot(x=y, y=x, color="lightsteelblue")
     plt.title(title)
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
-    plt.xticks(rotation=50)
     plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + jpgname + ".jpg")
 
 def imageset_intro_vis(download_folders, ds_path):

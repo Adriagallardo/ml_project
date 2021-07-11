@@ -6,14 +6,14 @@ import json
 
 def argparse_password():
     """Esta función añade un argumento de requerimiento para ejecutar un archivo python desde la terminal. Cuando ejecutemos
-    el archivo, tenemos que añadir -x 8642 en el comando de ejecución en terminal para que el contenido del archivo se ejecute."""
+    el archivo, tenemos que añadir -x adria en el comando de ejecución en terminal para que el contenido del archivo se ejecute."""
     parser = argparse.ArgumentParser()
     parser.add_argument("-x", "--x", help="Enter your password")
     args = vars(parser.parse_args())
     password = args["x"]
 
     """Condicional que coje el valor que buscamos para -x"""
-    if password != "8642":
+    if password != "adria":
         print("Wrong password")
         sys.exit()
     else:

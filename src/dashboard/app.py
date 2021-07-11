@@ -15,14 +15,18 @@ import os, sys
 
 if __name__ == '__main__':
     dir = os.path.dirname
-    src_path = dir(dir(__file__))
+    
+    src_path = dir(dir(os.path.abspath(__file__)))
     print(src_path)
     sys.path.append(src_path)
+
+    upper_path = dir(dir(dir(os.path.abspath(__file__))))
+    sys.path.append(upper_path)
 
 import utils.dashboard_tb as dash
 
 menu = st.sidebar.selectbox('Menu:',
-            options=['Inicio', 'Dataframe', 'API'])
+            options=['Inicio', 'Visualizaciones', 'Predicción de modelo','API'])
 
 # ---------- Opciones del sidebar y paginaciones ----------
 
@@ -31,10 +35,14 @@ if menu == 'Inicio':
     dash.welcome()
 
 
-if menu == 'Dataframe':
-        
-    dash.browse_json_todf()
+if menu == 'Visualizaciones':
+    
+    dash.visualization()
 
+
+if menu == 'Predicción de modelo':
+
+    dash.predict(upper_path)
 
 if menu == 'API':
 
