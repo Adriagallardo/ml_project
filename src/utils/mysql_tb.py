@@ -1,5 +1,8 @@
 import pymysql
 from sqlalchemy import create_engine
+from PIL import Image
+import os
+import pandas as pd
 
 class MySQL:
 
@@ -84,3 +87,47 @@ def connect_mysql(IP_DNS="54.87.229.244", USER="21755015m", PASSWORD="adriagalla
     db_connection_str = mysql_db.SQL_ALCHEMY
     db_connection = create_engine(db_connection_str)
     return db_connection
+
+
+def create_dataset_msyql(path):
+    """Esta función genera un DataFrame a partir de imágenes, apto para subir a MySQL"""
+    
+    """Esta función está especificada para la estructura de archivos que contiene el proyecto""" 
+
+    """Para poder utilizar esta función, se requiere que los archivos a recopilar se encuentren en la carpeta downloads,            preprocesados, pero cuando aún no se han spliteado en train y test"""
+
+    dataset_dict = {"id": [], "filename":[],"metadata":[]}
+
+
+    folders = os.listdir(path)
+    c = 1
+    for folder in folders:
+        filename_list_path = path + os.sep + folder
+        filename_list = os.listdir(filename_list_path)
+        
+        for filename in filename_list:
+            dataset_dict["filename"].append(filename)
+            
+            """Se añadirá a metadata el tamaño del archivo y su resolución"""
+            sublist = []
+
+            """Tamaño"""
+            size = str(os.path.getsize(filename_list_path + os.sep + filename)) + "bytes"
+            
+            """Resolución"""
+            img = Image.open(filename_list_path + os.sep + filename)
+            width, height = img.size
+            res = str((width, height))
+
+            """Toda metadata"""
+            dataset_dict["metadata"].append(res+size)
+            
+            
+            dataset_dict["id"].append(c)
+            c += 1
+        
+        print(f"Data de carpeta {folder} preparada")
+
+    df = pd.DataFrame(dataset_dict)
+
+    return df

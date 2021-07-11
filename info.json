@@ -1,10 +1,10 @@
 {
-    "project_name": "Clasificación de superficies terrestres reconocidas por vía satelital",
+    "project_name": "Clasificaci\u00f3n de superficies terrestres reconocidas por v\u00eda satelital",
     "author": "Adri\u00e0 Gallardo Vi\u00f1as",
     "linkedin": "linkedin.com/in/adri\u00e0-gallardo-vi\u00f1as-a25834209",
     "e_mail": "adriagallardo96@gmail.com",
-    "project_title": "Proyecto de Machine Learning: Clasificación de superficies terrestres reconocidas por vía satelital",
-    "project_description": "En este proyecto se diseñan diversos modelos de inteligencia artificial capaces de reconocer imágenes tomadas por vía satelital, sobre la superficie terrestre, y clasificarlas en grupos siguiendo los criterios de análisis exploratorio, aprendizaje automático (machine learning), aprendizaje profundo (deep learning), visualización de datos y diseño experimental. ",
+    "project_title": "Proyecto de Machine Learning: Clasificaci\u00f3n de superficies terrestres reconocidas por v\u00eda satelital",
+    "project_description": "En este proyecto se dise\u00f1an diversos modelos de inteligencia artificial capaces de reconocer im\u00e1genes tomadas por v\u00eda satelital, sobre la superficie terrestre, y clasificarlas en grupos siguiendo los criterios de an\u00e1lisis exploratorio, aprendizaje autom\u00e1tico (machine learning), aprendizaje profundo (deep learning), visualizaci\u00f3n de datos y dise\u00f1o experimental.",
     "flask_port": 4004,
     "streamlit_port": 8501,
     "python_libraries_used": [
@@ -27,6 +27,7 @@
         "sklearn",
         "random",
         "shutil",
-        "keras_visualizer"
+        "keras_visualizer",
+        "pickle"
     ]
 }

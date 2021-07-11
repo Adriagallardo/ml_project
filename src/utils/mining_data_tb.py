@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 import tensorflow as tf
+import pandas as pd
 
 
 def delete_corrupted_images(folders, folders_dir):
@@ -25,3 +26,22 @@ def delete_corrupted_images(folders, folders_dir):
                 os.remove(fpath)
 
     print(f"Borradas {num_skipped} imágenes")
+
+
+def clas_dict_to_data_vis(report):
+    """Esta función, a partir de un reporte en formato de diccionario. Genera un dataframe que retorna y crea una visualización para los datos del reporte"""
+
+    df = pd.DataFrame(report).T[:-3]
+    df.drop(df.columns[-1], axis=1, inplace=True)
+
+    fig, axes = plt.subplots(1, 3, sharey=True, figsize=(15,5))
+
+    for i, k in enumerate(df.columns):
+        axes[i].set_title(k, fontsize=20)
+        sns.barplot(y=df.index, x=df[k].values,data=df, color="dodgerblue", ax=axes[i])
+
+
+    plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "classification_report.jpg")
+    plt.show()
+            
+    return df

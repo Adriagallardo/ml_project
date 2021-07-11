@@ -1,6 +1,8 @@
 import tensorflow as tf
 import os
 from sklearn.metrics import confusion_matrix
+from sklearn import preprocessing
+import numpy as np
 
 
 
@@ -87,3 +89,31 @@ def single_predictions(model):
         image_size=(64, 64),
         color_mode="rgb"
     )
+
+def create_test_and_train(train, test):
+    """Esta función separa los splits de train y test de un tensorflow.dataset para trabajar con modelos que no sean de deeplearning"""
+
+    """Se está trabajando con metadata de tensorflow, para trabajar con otros modelos, es necesario extraer 'y' y 'X' de los modelos de data de tensorflow. Las Y están   en formato one-hot encoding, por lo que hay que pasar la función argmax para utilizar las dimensiones deseadas."""
+
+    X_train = np.concatenate([x for x, y in train], axis=0)
+    y_train = np.argmax(np.concatenate([y for x, y in train], axis=0),axis=1)
+
+    X_test = np.concatenate([x for x, y in test], axis=0)
+    y_test = np.argmax(np.concatenate([y for x, y in test], axis=0),axis=1)
+
+    X_train = X_train.reshape(X_train.shape[0],X_train.shape[1]*X_train.shape[2]*X_train.shape[3])
+    X_test = X_test.reshape(X_test.shape[0],X_test.shape[1]*X_test.shape[2]*X_test.shape[3])
+
+
+    return X_train, y_train, X_test, y_test
+
+def scale_X(train,test):
+    """Esta función escala los valores de X de los conjuntos que se le pasan"""
+
+    Xscaler = preprocessing.StandardScaler().fit(train)
+    scaler = preprocessing.StandardScaler().fit(test)
+    
+    X_train_scaled = Xscaler.transform(train)
+    X_test_scaled = scaler.transform(test)
+
+    return X_train_scaled, X_test_scaled

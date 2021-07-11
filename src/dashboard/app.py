@@ -26,7 +26,7 @@ if __name__ == '__main__':
 import utils.dashboard_tb as dash
 
 menu = st.sidebar.selectbox('Menu:',
-            options=['Inicio', 'Visualizaciones', 'Predicción de modelo','API'])
+            options=['Inicio', 'Visualizaciones','Predicción de modelo','Modelos de SQL Database'])
 
 # ---------- Opciones del sidebar y paginaciones ----------
 
@@ -40,10 +40,17 @@ if menu == 'Visualizaciones':
     dash.visualization()
 
 
+#La sección de mostrar DataFrame por Api de Flask no se inserta porque se trabaja con un proyecto que opera imágenes, no DataFrames.
+#if menu == 'API':
+
+    #dash.api_flask_menu('http://127.0.0.1:4004/get_token?password=M21755015')
+
+
 if menu == 'Predicción de modelo':
 
     dash.predict(upper_path)
 
-if menu == 'API':
 
-    dash.api_flask_menu('http://127.0.0.1:4004/get_token?password=M21755015')
+if menu == 'Modelos de SQL Database':
+
+    dash.table_from_mysql()

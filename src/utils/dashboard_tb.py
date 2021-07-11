@@ -9,6 +9,7 @@ from keras.preprocessing.image import img_to_array
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
+from utils.mysql_tb import MySQL, connect_mysql
 
 
 st.cache(suppress_st_warning=True)
@@ -50,6 +51,7 @@ def visualization():
     st.write('\n\n\nResultados de predicción del mejor modelo:')
     img = Image.open( '..' + os.sep + '..' + os.sep+ 'reports'+ os.sep+ 'from_main'+ os.sep+ 'images'+ os.sep + 'real_pred_samples.jpg')
     st.image(img,use_column_width=True)
+
 
 def predict(upper_path):
     """Esta función permite poner en un dashboard un recogedor de imágenes que haga predicciones para el modelo que se propone"""
@@ -97,9 +99,14 @@ def predict(upper_path):
 
 
    
-
-
+def table_from_mysql():
+    """Esta función llama a la tabla de sql donde se guardan los 5 mejores modelos utilizados en main.ipynb"""
+    db_connection = connect_mysql(IP_DNS="consciencesai.com", USER="21755015m", PASSWORD="adriagallardo96", BD_NAME="21755015m_ds_april_2021_db", PORT=30001)
     
+    a = pd.read_sql_table("table_comparasion", db_connection)
+
+    st.title("DataFrame de 5 mejores modelos guardados en MySQL")
+    st.write(a)
 
 def browse_json_todf():
     """Esta función genera un navegador que permite seleccionar un archivo json en el equipo
@@ -111,13 +118,15 @@ def browse_json_todf():
         df_slider = load_json_df(slider_json)
         st.table(df_slider)
 
-def api_flask_menu(URL):
-    """Esta función coje el json de un string URL que le pasamos, lo muestra por panalla como
-    dataframe primero y, a continuación, lo muestra en formato json con una codificación
-    orient='split'"""
-    a = pd.read_json(URL, orient='split')
-    st.title("DataFrame de Flask")
-    st.write(a)
-    st.title("API de DataFrame de Flask")
-    st.write("Al descargar, tener en cuenta que se ha codificado con orientación: split")
-    st.write(a.to_json(orient='split'))
+#A continuación se excluye una función del proyecto porque este trabaja con imagenes y no interesa trabajar con DataFrames. No obstante, se almacena por si fuera necesaria.
+
+#def api_flask_menu(URL):
+    #"""Esta función coje el json de un string URL que le pasamos, lo muestra por panalla como
+    #dataframe primero y, a continuación, lo muestra en formato json con una codificación
+    #orient='split'"""
+    #a = pd.read_json(URL, orient='split')
+    #st.title("DataFrame de Flask")
+    #st.write(a)
+    #st.title("API de DataFrame de Flask")
+    #st.write("Al descargar, tener en cuenta que se ha codificado con orientación: split")
+    #st.write(a.to_json(orient='split'))

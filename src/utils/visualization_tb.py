@@ -14,18 +14,16 @@ def sns_gstyle():
 
 def pie_chart(data):
     """Esta función configura un 'piechart' para el Series que le pasamos"""
-    plt.figure(1, figsize=(24,12))
+    plt.figure(1, figsize=(12,10))
     labels = data.keys()
     a = plt.pie(data, labels=labels, autopct='%.0f%%', radius=0.7, textprops= {"weight":"bold"})
     return a
 
-def visualize_countplot(x,y,xlabel,ylabel,title,jpgname):
+def visualize_countplot(x,y,title,jpgname):
     """Esta función genera una visualización de conteo de Y para X, en barras horizontalmente."""
-    plt.figure(figsize=(10, 10))
+    plt.figure(figsize=(12, 6))
     sns.barplot(x=y, y=x, color="lightsteelblue")
-    plt.title(title)
-    plt.ylabel(ylabel)
-    plt.xlabel(xlabel)
+    plt.title(title+"\n", fontsize=18)
     plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + jpgname + ".jpg")
 
 def imageset_intro_vis(download_folders, ds_path):
@@ -38,18 +36,18 @@ def imageset_intro_vis(download_folders, ds_path):
         image_directory = os.path.join(ds_path, classification)
         image_file_names = os.listdir(image_directory)
         selected_image_file_paths[classification] = [os.path.join(image_directory, image_file_names[i]) for i in image_indexes]
-    plt.figure(figsize=(10,12))
+    plt.figure(figsize=(4,14))
     
         
     for i,classification in enumerate(download_folders):
         for j,image in enumerate(selected_image_file_paths[classification]):
             image_number = (i * len(image_indexes)) + j + 1
-            ax = plt.subplot(4,3,image_number)
+            ax = plt.subplot(6,2,image_number)
             plt.title(classification)
             plt.axis("off")
             plt.imshow(mpimg.imread(image))
     
-    plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "image_label_example.jpg")
+    plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "image_label_example.png", transparent=True)
 
 def labels_intro_vis(download_folders, training):
     """Esta función muestra por pantalla un ejemplo de como se organizan los labels en tensorflow, por visualización"""
@@ -119,18 +117,17 @@ def real_pred_samples(test, predictions, model):
             
             plt.axis("off")
 
-    plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "real_pred_samples.jpg")
+    plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "real_pred_samples.png", transparent=True)
 
 def plot_confusion_matrix(cm, subset):
     "Esta función imprime por pantalla una visualización de una matriz de confusión en formato heatmap. 'cm' es el parámetro correspondiente con la matriz y subset son los niveles con los que clasificamos la matriz"
 
     # create figure
-    fig, axes = plt.subplots(nrows=1, ncols=1, figsize=(10, 8))
+    fig, axes = plt.subplots(nrows=1, ncols=1, figsize=(15, 13))
 
     # plot heatmap - adjust font and label size
-    sns.set(font_scale=1.0) 
     sns.heatmap(cm, annot=True, annot_kws={"size": 14}, fmt='d', ax=axes, vmin=0, vmax=100, cmap="Blues",xticklabels=subset, yticklabels=subset)
-    plt.xlabel("Etiqueta de predicción")
-    plt.ylabel("Etiqueta real")
+    plt.xticks(fontsize=11)
+    plt.yticks(fontsize=11)
     plt.savefig(".." + os.sep + "reports" + os.sep + "from_main" + os.sep + "images" + os.sep + "confusion_matrix.jpg")
     plt.show()

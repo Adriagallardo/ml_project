@@ -9,14 +9,10 @@ import os
 import shutil
 import tensorflow as tf
 
-def read_my_csv(path_file):
-    """Esta función lee el un archivo .csv introduciendo su ruta"""
-    data = pd.read_csv(path_file)
-    return data
 
 def create_json(path_file, data):
     """Esta función crea un archivo json en la ruta que pongamos, sobre un dataframe escogido"""
-    json_written = data.to_json(orient="split")
+    json_written = data.to_json()
     with open(path_file, 'w') as created:  
         created.write(json_written)
 
